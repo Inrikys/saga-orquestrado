@@ -133,9 +133,9 @@ services:
     ports:
       - 8090:8090
 
-  payment-validation-service:
-    build: './payment-validation-service'
-    container_name: payment-validation-service
+  payment-service:
+    build: './payment-service'
+    container_name: payment-service
     depends_on:
       - payment-db
       - kafka
@@ -149,10 +149,11 @@ services:
       - DB_USER=postgres
       - DB_PASSWORD=postgres
     ports:
+      - 8091:8091
 
-  inventory-validation-service:
-    build: './inventory-validation-service'
-    container_name: inventory-validation-service
+  inventory-service:
+    build: './inventory-service'
+    container_name: inventory-service
     depends_on:
       - payment-db
       - kafka
@@ -166,7 +167,7 @@ services:
       - DB_USER=postgres
       - DB_PASSWORD=postgres
     ports:
-      - 8091:8091
+      - 8092:8092
 
 networks:
   orchestrator-saga:
