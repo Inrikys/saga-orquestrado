@@ -14,7 +14,7 @@ public class KafkaProducer {
     @Value("spring.kafka.topic.orchestrator")
     private String orchestratorTopic;
 
-    public KafkaProducer(KafkaTemplate kafkaTemplate) {
+    public KafkaProducer(KafkaTemplate<String, String> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 

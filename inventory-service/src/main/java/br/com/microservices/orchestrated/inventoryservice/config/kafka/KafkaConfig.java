@@ -35,11 +35,11 @@ public class KafkaConfig {
     @Value("${spring.kafka.topic.orchestrator}")
     private String orchestratorTopic;
 
-    @Value("${spring.kafka.topic.inventory-validation-success}")
-    private String inventoryValidationSuccessTopic;
+    @Value("${spring.kafka.topic.inventory-success}")
+    private String inventorySuccessTopic;
 
-    @Value("${spring.kafka.topic.inventory-validation-fail}")
-    private String inventoryValidationFailTopic;
+    @Value("${spring.kafka.topic.inventory-fail}")
+    private String inventoryFailTopic;
 
     @Bean
     public ConsumerFactory<String, String> consumerFactory() {
@@ -62,13 +62,13 @@ public class KafkaConfig {
     }
 
     @Bean
-    public NewTopic inventoryValidationSuccessTopic() {
-        return buildTopic(inventoryValidationSuccessTopic);
+    public NewTopic inventorySuccessTopic() {
+        return buildTopic(inventorySuccessTopic);
     }
 
     @Bean
-    public NewTopic inventoryValidationFailTopic() {
-        return buildTopic(inventoryValidationFailTopic);
+    public NewTopic inventoryFailTopic() {
+        return buildTopic(inventoryFailTopic);
     }
 
     private Map<String, Object> consumerProps() {

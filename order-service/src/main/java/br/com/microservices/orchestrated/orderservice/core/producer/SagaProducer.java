@@ -14,7 +14,7 @@ public class SagaProducer {
     @Value("spring.kafka.topic.start-saga")
     private String startSagaTopic;
 
-    public SagaProducer(KafkaTemplate kafkaTemplate) {
+    public SagaProducer(KafkaTemplate<String, String> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 

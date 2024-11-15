@@ -10,7 +10,7 @@ public class SagaOrchestratorProducer {
 
     private final KafkaTemplate<String, String> kafkaTemplate;
 
-    public SagaOrchestratorProducer(KafkaTemplate kafkaTemplate) {
+    public SagaOrchestratorProducer(KafkaTemplate<String, String> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 
