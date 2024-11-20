@@ -38,7 +38,7 @@ public class Event {
         eventHistory.add(history);
     }
 
-    public void isValid(ValidationRepository validationRepository, ProductRepository productRepository) {
+    public void validate(ValidationRepository validationRepository, ProductRepository productRepository) {
 
         validateProductsInformed();
 

@@ -1,9 +1,6 @@
 package br.com.microservices.orchestrated.productvalidationservice.core.service;
 
 import br.com.microservices.orchestrated.productvalidationservice.core.dto.Event;
-import br.com.microservices.orchestrated.productvalidationservice.core.dto.History;
-import br.com.microservices.orchestrated.productvalidationservice.core.dto.OrderProducts;
-import br.com.microservices.orchestrated.productvalidationservice.core.enums.ESagaStatus;
 import br.com.microservices.orchestrated.productvalidationservice.core.model.Validation;
 import br.com.microservices.orchestrated.productvalidationservice.core.producer.KafkaProducer;
 import br.com.microservices.orchestrated.productvalidationservice.core.repository.ProductRepository;
@@ -11,10 +8,7 @@ import br.com.microservices.orchestrated.productvalidationservice.core.repositor
 import br.com.microservices.orchestrated.productvalidationservice.core.utils.JsonUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.common.security.oauthbearer.internals.secured.ValidateException;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 
 import static org.springframework.util.ObjectUtils.isEmpty;
 
@@ -32,7 +26,7 @@ public class ProductValidationService {
 
     public void validateExistingProducts(Event event) {
         try {
-            event.isValid(validationRepository, productRepository);
+            event.validate(validationRepository, productRepository);
             createValidation(event, true);
             event.handleSuccess(CURRENT_SOURCE);
         } catch (Exception ex) {
