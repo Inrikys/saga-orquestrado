@@ -10,8 +10,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import static org.springframework.util.ObjectUtils.isEmpty;
-
 @Slf4j
 @Service
 @AllArgsConstructor
@@ -28,13 +26,29 @@ public class ProductValidationService {
         try {
             event.validate(validationRepository, productRepository);
             createValidation(event, true);
-            event.handleSuccess(CURRENT_SOURCE);
+            event.addHistorySuccess(CURRENT_SOURCE);
         } catch (Exception ex) {
             log.error("Error trying to validate products: ", ex);
-            handleFailCurrentNotExecuted(event, ex.getMessage());
+            event.addHistoryFail(CURRENT_SOURCE, ex.getMessage());
         }
 
         producer.sendEvent(jsonUtil.toJson(event));
+    }
+
+    public void rollbackEvent(Event event) {
+        changeValidationToFail(event);
+        event.addHistoryRollback(CURRENT_SOURCE);
+
+        producer.sendEvent(jsonUtil.toJson(event));
+    }
+
+    private void changeValidationToFail(Event event) {
+        validationRepository
+                .findByOrderIdAndTransactionId(event.getPayload().getId(), event.getPayload().getTransactionId())
+                .ifPresentOrElse(validation -> {
+                    validation.setSuccess(false);
+                    validationRepository.save(validation);
+                }, () -> createValidation(event, false));
     }
 
     private void createValidation(Event event, boolean success) {

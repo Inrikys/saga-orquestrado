@@ -1,8 +1,10 @@
 package br.com.microservices.orchestrated.productvalidationservice.core.dto;
 
 import br.com.microservices.orchestrated.productvalidationservice.core.enums.ESagaStatus;
+import br.com.microservices.orchestrated.productvalidationservice.core.producer.KafkaProducer;
 import br.com.microservices.orchestrated.productvalidationservice.core.repository.ProductRepository;
 import br.com.microservices.orchestrated.productvalidationservice.core.repository.ValidationRepository;
+import br.com.microservices.orchestrated.productvalidationservice.core.utils.JsonUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -78,11 +80,24 @@ public class Event {
         }
     }
 
-    public void handleSuccess(String currentSource) {
+    public void addHistorySuccess(String currentSource) {
         this.setStatus(ESagaStatus.SUCCESS);
         this.setSource(currentSource);
 
         addHistory(this, "Products are validated successfully!");
+    }
+
+    public void addHistoryFail(String message, String currentSource) {
+        this.setStatus(ESagaStatus.ROLLBACK_PENDING);
+        this.setSource(currentSource);
+
+        addHistory(this, "Fail to validate products: " + message);
+    }
+
+    public void addHistoryRollback(String currentSource) {
+        this.setStatus(ESagaStatus.FAIL);
+        this.setSource(currentSource);
+        addHistory(this, "Rollback executed on product validation!");
     }
 
     private void addHistory(Event event, String message) {
