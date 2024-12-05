@@ -3,6 +3,7 @@ package br.com.microservices.orchestrated.paymentservice.core.service;
 import br.com.microservices.orchestrated.paymentservice.config.exception.ValidationException;
 import br.com.microservices.orchestrated.paymentservice.core.dto.Event;
 import br.com.microservices.orchestrated.paymentservice.core.enums.EPaymentStatus;
+import br.com.microservices.orchestrated.paymentservice.core.enums.ESagaStatus;
 import br.com.microservices.orchestrated.paymentservice.core.model.Payment;
 import br.com.microservices.orchestrated.paymentservice.core.producer.KafkaProducer;
 import br.com.microservices.orchestrated.paymentservice.core.repository.PaymentRepository;
@@ -66,8 +67,15 @@ public class PaymentService {
     }
 
     public void doRefund(Event event) {
-        changePaymentStatusToRefund(event);
-        event.addHistoryRollback(CURRENT_SOURCE);
+        event.setStatus(ESagaStatus.FAIL);
+        event.setSource(CURRENT_SOURCE);
+        try {
+            changePaymentStatusToRefund(event);
+            event.addHistory(event, "Rollback executed for payment!");
+        } catch (Exception ex) {
+            event.addHistoryFail("- Rollback failed: ".concat(ex.getMessage()), CURRENT_SOURCE);
+        }
+
         producer.sendEvent(jsonUtil.toJson(event));
     }
 

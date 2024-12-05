@@ -71,7 +71,7 @@ public class Event {
         addHistory(this, "Rollback executed on payment!");
     }
 
-    private void addHistory(Event event, String message) {
+    public void addHistory(Event event, String message) {
         History history = History.builder()
                 .source(event.getSource())
                 .status(event.getStatus())
