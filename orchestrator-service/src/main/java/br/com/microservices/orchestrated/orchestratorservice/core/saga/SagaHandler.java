@@ -11,7 +11,7 @@ public final class SagaHandler {
     }
 
     public static final Object[][] SAGA_HANDLER = {
-            //TOPICO = 2 - STATUS = 1 - ORIGEM DO EVENTO = 0
+            //ORIGEM DO EVENTO = 0 - STATUS = 1 - TOPICO = 2
             {ORCHESTRATOR, SUCCESS, PRODUCT_VALIDATION_SERVICE},
             {ORCHESTRATOR, FAIL, FINISH_FAIL},
 
