@@ -1,8 +1,6 @@
 package br.com.microservices.orchestrated.orchestratorservice.core.service;
 
 import br.com.microservices.orchestrated.orchestratorservice.core.dto.Event;
-import br.com.microservices.orchestrated.orchestratorservice.core.enums.EEventSource;
-import br.com.microservices.orchestrated.orchestratorservice.core.enums.ESagaStatus;
 import br.com.microservices.orchestrated.orchestratorservice.core.enums.ETopics;
 import br.com.microservices.orchestrated.orchestratorservice.core.producer.SagaOrchestratorProducer;
 import br.com.microservices.orchestrated.orchestratorservice.core.saga.SagaExecutionController;
@@ -10,9 +8,10 @@ import br.com.microservices.orchestrated.orchestratorservice.core.utils.JsonUtil
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import static br.com.microservices.orchestrated.orchestratorservice.core.enums.EEventSource.*;
-import static br.com.microservices.orchestrated.orchestratorservice.core.enums.ESagaStatus.*;
-import static br.com.microservices.orchestrated.orchestratorservice.core.enums.ETopics.*;
+import static br.com.microservices.orchestrated.orchestratorservice.core.enums.EEventSource.ORCHESTRATOR;
+import static br.com.microservices.orchestrated.orchestratorservice.core.enums.ESagaStatus.FAIL;
+import static br.com.microservices.orchestrated.orchestratorservice.core.enums.ESagaStatus.SUCCESS;
+import static br.com.microservices.orchestrated.orchestratorservice.core.enums.ETopics.NOTIFY_ENDING;
 
 @Slf4j
 @Service
